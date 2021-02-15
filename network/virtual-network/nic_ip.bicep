@@ -16,6 +16,14 @@ param ipAddrVersion string {
 param subnetId string
 param nsgId string
 
+resource publicIP 'Microsoft.Network/publicIPAddresses@2020-06-01' = {
+  name: '${name}_IP'
+  location: resourceGroup().location
+  properties: {
+    publicIPAddressVersion: ipAddrVersion
+    publicIPAllocationMethod: ipAllocation
+  }
+}
 resource createdNIC 'Microsoft.Network/networkInterfaces@2020-06-01' = {
   name: name
   location: resourceGroup().location
@@ -28,10 +36,7 @@ resource createdNIC 'Microsoft.Network/networkInterfaces@2020-06-01' = {
           primary: true
           privateIPAllocationMethod: 'Dynamic'
           publicIPAddress: {
-            properties: {
-              publicIPAllocationMethod: ipAllocation
-              publicIPAddressVersion: ipAddrVersion
-            }
+            id: publicIP.id
           }
           subnet: {
             id: subnetId
