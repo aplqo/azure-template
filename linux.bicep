@@ -1,9 +1,11 @@
 param name string
 param publicKey array
 
-resource virtNetwork 'Microsoft.Network/virtualNetworks@2020-06-01' = {
-  name: '${name}_vnet'
-  location: resourceGroup().location
+module vnet './network/virtual-network/virtualNetwork.bicep' = {
+  name: '${name}_vnet_deploy'
+  params: {
+    name: name
+  }
 }
 module nsg './network/virtual-network/nsg_ssh.bicep' = {
   name: '${name}_nsg_deploy'
@@ -15,7 +17,7 @@ module nic './network/virtual-network/nic_ip.bicep' = {
   name: '${name}_nic_deploy'
   params: {
     name: name
-    subnetId: virtNetwork.properties.subnets[0].id
+    subnetId: vnet.outputs.vnet.properties.subnets[0].id
     nsgId: nsg.outputs.nsg.id
   }
 }
