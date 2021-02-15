@@ -17,14 +17,16 @@ param subnetId string
 param nsgId string
 
 resource createdNIC 'Microsoft.Network/networkInterfaces@2020-06-01' = {
-  name: '${name}_NIC'
+  name: name
   location: resourceGroup().location
   properties: {
     enableAcceleratedNetworking: true
     ipConfigurations: [
       {
+        name: '${name}_config'
         properties: {
           primary: true
+          privateIPAllocationMethod: 'Dynamic'
           publicIPAddress: {
             properties: {
               publicIPAllocationMethod: ipAllocation

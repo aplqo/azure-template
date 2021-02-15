@@ -1,7 +1,7 @@
 param name string
 
 resource createdNSG 'Microsoft.Network/networkSecurityGroups@2020-06-01' = {
-  name: '${name}_NSG'
+  name: name
   location: resourceGroup().location
   properties: {
     securityRules: [
