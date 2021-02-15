@@ -1,5 +1,4 @@
 param name string
-param image object
 param size string = 'Standard_F8s_v2'
 param nicId string
 param publicKey array
@@ -32,7 +31,12 @@ resource linuxVM 'Microsoft.Compute/virtualMachines@2020-06-01' = {
       }
     }
     storageProfile: {
-      imageReference: image
+      imageReference: {
+        offer: 'debian-11-daily'
+        publisher: 'Debian'
+        sku: '11-gen2'
+        version: 'latest'
+      }
       osDisk: {
         caching: 'ReadWrite'
         createOption: 'FromImage'
