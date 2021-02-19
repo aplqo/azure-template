@@ -4,7 +4,9 @@ param port int {
   maxValue: 65536
   default: 80
 }
-param auth string
+param auth string {
+  secure: true
+}
 param reverse bool = false
 
 var exposedPort = [
@@ -34,6 +36,7 @@ resource chisel 'Microsoft.ContainerInstance/containerGroups@2019-12-01' = {
             }
           }
           command: [
+            '/app/chisel'
             'server'
             '--port'
             port
